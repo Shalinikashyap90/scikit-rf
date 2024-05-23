@@ -97,9 +97,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from .constants import INF, S_DEF_DEFAULT, NumberLike
-from .media import media
 from .network import Network, connect, innerconnect, s2s
-from .util import subplots
 
 if TYPE_CHECKING:
     from .frequency import Frequency
@@ -285,7 +283,8 @@ class Circuit:
 
             In [18]: port1 = rf.Circuit.Port(freq, name='Port1')
         """
-        _media = media.DefinedGammaZ0(frequency, z0=z0)
+        from .media import DefinedGammaZ0
+        _media = DefinedGammaZ0(frequency, z0=z0)
         port = _media.match(name=name)
         port._is_circuit_port = True
         return port
@@ -1303,6 +1302,8 @@ class Circuit:
             'label_shift_y': 0
 
         """
+        from .plotting import plt
+        subplots = plt.subplots
 
         nx = self._get_nx()
         G = self.G
